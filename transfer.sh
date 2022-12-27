@@ -40,6 +40,23 @@ singleUpload()
 }
 printUploadResponse
 
+# code for dowload file.
+
+function download() {
+  if [ -n "${file}" ]; then
+    local path=$(greadlink -f "${file}" 2> /dev/null || readlink -f "${file}" 2> /dev/null)
+
+    curl --progress-bar "${url}" |
+      ([ -z "${decrypt}" ] && cat || openssl aes-256-cbc -d -a ${password:+-k "${password}"}) > "${path}"
+
+    echo "${path}"
+    if type pbcopy &> /dev/null; then echo -n ${path} | pbcopy; fi
+  else
+    curl --silent "${url}" 2> /dev/null |
+      ([ -z "${decrypt}" ] && cat || openssl aes-256-cbc -d -a ${password:+-k "${password}"})
+  fi
+}
+
 # code for help options
 
 while getopts 'dvh' OPTION; do
