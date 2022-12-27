@@ -40,3 +40,30 @@ singleUpload()
 }
 printUploadResponse
 
+# code for help options
+
+while getopts 'dvh' OPTION; do
+  case $OPTION in
+    d)
+        singleDownload "$2" "$3" "$4"
+	exit 0
+	;;		  
+    v) 
+      echo "$currentVersion"
+      exit 0
+      ;;
+    h)
+      echo " Description: Bash tool to transfer files from the command line. 
+        Usage: 
+        -d  Download file from https://transfer.sh/{particular folder} 
+        -h  Show the help about attributes. Show examples 
+	-v  Get the tool version 
+    
+      "
+      exit 0
+      ;; 
+      *) echo "use [-v] [-d] [-h]"
+         exit 0
+         ;;
+  esac 
+done
