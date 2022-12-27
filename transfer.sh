@@ -1,10 +1,11 @@
-#!/bin/curl
+!/bin/curl
 
-currentVersion="0.0.1"
+currentVersion="1.1.0"
 
 httpSingleUpload()
 {
-    response=$(curl -A curl --upload-file "$1" "https://transfer.sh/$2") || { echo "Failure!"; return 1;}
+    response=$(curl -A curl -# --upload-file "$1" "https://transfer.sh/$2") || { echo "Failure!"; return 1;}
+    printUploadResponse
 }
 
 printUploadResponse()
