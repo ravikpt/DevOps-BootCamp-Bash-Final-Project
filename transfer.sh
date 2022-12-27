@@ -40,6 +40,15 @@ singleUpload()
 }
 printUploadResponse
 
+case "${cmd}" in
+  download)
+    [ -z "${url}" ] && read -e -p 'Enter url (e.g. https://transfer.sh/abcXYZ/file.log): ' url
+  ;;
+  upload)
+    [ -z "${file}" ] && read -e -p 'Enter file (e.g. /path/to/file.log): ' file
+  ;;
+esac
+
 # code for dowload file.
 
 function download() {
