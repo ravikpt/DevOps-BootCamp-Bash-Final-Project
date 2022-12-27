@@ -38,33 +38,31 @@ singleUpload()
     httpSingleUpload "$filePath" "$tempFileName"
   done
 }
-printUploadResponse
-
-case "${cmd}" in
-  download)
-    [ -z "${url}" ] && read -e -p 'Enter url (e.g. https://transfer.sh/abcXYZ/file.log): ' url
-  ;;
-  upload)
-    [ -z "${file}" ] && read -e -p 'Enter file (e.g. /path/to/file.log): ' file
-  ;;
-esac
 
 # code for dowload file.
-
-function download() {
-  if [ -n "${file}" ]; then
-    local path=$(greadlink -f "${file}" 2> /dev/null || readlink -f "${file}" 2> /dev/null)
-
-    curl --progress-bar "${url}" |
-      ([ -z "${decrypt}" ] && cat || openssl aes-256-cbc -d -a ${password:+-k "${password}"}) > "${path}"
-
-    echo "${path}"
-    if type pbcopy &> /dev/null; then echo -n ${path} | pbcopy; fi
-  else
-    curl --silent "${url}" 2> /dev/null |
-      ([ -z "${decrypt}" ] && cat || openssl aes-256-cbc -d -a ${password:+-k "${password}"})
+singleDownload()
+{
+  filePath=$(echo "$1")
+  
+  if [ ! -d "$filePath" ]
+  then
+    mkdir "$filePath"
+   # echo "create $filePath"	    
   fi
+  
+  echo "Downloading $3"
+  response=$(curl -# --url "https://transfer.sh/$2/$3" --output "$filePath/$3")
+  printDownloadResponse
 }
+
+printDownloadResponse()
+{
+  fileID=$(echo "$response" | cut -d "/" -f 4)
+  cat <<EOF
+Success! $fileID
+EOF
+}
+
 
 # code for help options
 
