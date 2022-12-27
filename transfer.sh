@@ -40,26 +40,3 @@ singleUpload()
 }
 printUploadResponse
 
-# adding options
-while getopts ":d:v:h:" opt; do
-  case $opt in
-    d)
-      singleDownload "$2" "$3" "$4"
-      ;;
-    v)
-      echo "$currentVersion"
-      ;;
-    h)
-      echo " Description: Bash tool to transfer files from command line.
-       usage:
-        -d  Download file from https://transfer.sh/{particular folder}
-        -h  Show the help about attributes. Show examples
-        -v  Get the tool version
-
-        Examples:
-          ./transfer.sh test.txt
-          ./transfer.sh test.txt test2.txt ...
-          ./transfer.sh -v
-          ./transfer.sh -h
-  esac
-done
