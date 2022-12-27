@@ -33,7 +33,14 @@ singleUpload()
 
     tempFileName=$(echo "$i" | sed "s/.*\///")
     
-    # adding options
+    echo "Uploading $tempFileName"
+
+    httpSingleUpload "$filePath" "$tempFileName"
+  done
+}
+printUploadResponse
+
+# adding options
 while getopts ":d:v:h:" opt; do
   case $opt in
     d)
@@ -51,18 +58,8 @@ while getopts ":d:v:h:" opt; do
 
         Examples:
           ./transfer.sh test.txt
-
           ./transfer.sh test.txt test2.txt ...
-
           ./transfer.sh -v
           ./transfer.sh -h
   esac
 done
-
-
-    echo "Uploading $tempFileName"
-
-    httpSingleUpload "$filePath" "$tempFileName"
-  done
-}
-printUploadResponse
