@@ -1,4 +1,4 @@
-!/bin/curl
+#!/bin/curl
 
 currentVersion="1.1.0"
 
