@@ -1,6 +1,6 @@
 #!/bin/bash
 
-currentVersion="1.1.0"
+currentVersion="1.23.0"
 
 httpSingleUpload()
 {
@@ -32,17 +32,16 @@ singleUpload()
     fi
 
     tempFileName=$(echo "$i" | sed "s/.*\///")
-    
+
     echo "Uploading $tempFileName"
 
     httpSingleUpload "$filePath" "$tempFileName"
   done
 }
 
-# code for dowload file.
 singleDownload()
 {
-  filePath=$(echo "$1")
+  filePath=$(echo "$1" | sed 's/\.\///g')
   
   if [ ! -d "$filePath" ]
   then
@@ -63,9 +62,6 @@ Success! $fileID
 EOF
 }
 
-
-# code for help options
-
 while getopts 'dvh' OPTION; do
   case $OPTION in
     d)
@@ -83,6 +79,13 @@ while getopts 'dvh' OPTION; do
         -h  Show the help about attributes. Show examples 
 	-v  Get the tool version 
     
+        Examples: 
+          ./transfer.sh test.txt 
+	  
+	  ./transfer.sh test.txt test2.txt ...
+	  
+	  ./transfer.sh -v
+	  ./transfer.sh -h
       "
       exit 0
       ;; 
@@ -91,3 +94,5 @@ while getopts 'dvh' OPTION; do
          ;;
   esac 
 done
+
+singleUpload "$@" || exit 1
